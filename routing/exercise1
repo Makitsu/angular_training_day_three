@@ -1,0 +1,41 @@
+Routing
+
+Exercise 1
+
+--
+
+1 - Create a new Angular application using the Angular CLI:
+
+ng new angular_routing_ex1
+
+2 - Generate two components:
+    ng generate component home
+    ng generate component about
+
+3 - Open app.module.ts and import the RouterModule and Routes modules from @angular/router
+
+4 - Define the routes for the HomeComponent and AboutComponent:
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'about', component: AboutComponent },
+];
+
+5 - Add the RouterModule to the imports array of the @NgModule decorator:
+
+imports: [
+  BrowserModule,
+  RouterModule.forRoot(routes),
+],
+
+6 - In the HomeComponent template, add a button or link to navigate to the AboutComponent:
+
+<button routerLink="/about">Go to About</button>
+
+7 - In the AppComponent template, add the router outlet to display the current component:
+
+<router-outlet></router-outlet>
+
+
+
+

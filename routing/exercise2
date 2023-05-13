@@ -1,0 +1,92 @@
+Routing
+
+Exercise 2
+
+Create an Angular application that displays a list of products.
+
+Each product should have a details page that displays more information about the product.
+
+The application should also have a search feature that allows users to filter the list of products based on various criteria.
+
+--
+
+1 - Create a new Angular application using the Angular CLI:
+
+    ng new my-app
+
+2 - Generate a ProductListComponent:
+
+    ng generate component product-list
+
+3 - Generate a ProductDetailsComponent:
+
+    ng generate component product-details
+
+4 - Open app.module.ts and import the RouterModule and Routes modules from @angular/router
+
+5 - Define the routes for the ProductListComponent and ProductDetailsComponent, with a parameterized route for the product ID:
+
+    const routes: Routes = [
+      { path: '', redirectTo: '/products', pathMatch: 'full' },
+      { path: 'products', component: ProductListComponent },
+      { path: 'products/:id', component: ProductDetailsComponent },
+    ];
+
+6 - Add a child route for the ProductDetailsComponent that displays a tabbed interface for displaying different information about the product:
+
+    const routes: Routes = [
+      { path: '', redirectTo: '/products', pathMatch: 'full' },
+      { path: 'products', component: ProductListComponent },
+      {
+        path: 'products/:id',
+        component: ProductDetailsComponent,
+        children: [
+          { path: 'description', component: ProductDescriptionComponent },
+          { path: 'reviews', component: ProductReviewsComponent },
+        ]
+      },
+    ];
+
+
+7 - In the ProductListComponent, display a list of products and add a search bar that allows users to filter the list based on various criteria.
+When a user clicks on a product, navigate to the ProductDetailsComponent and pass in the product ID as a route parameter:
+
+    <div *ngFor="let product of products">
+      <a [routerLink]="['/products', product.id]">{{ product.name }}</a>
+    </div>
+
+8 - In the ProductDetailsComponent, retrieve the product ID from the route parameters and use it to display the details of the product.
+Also, add a tabbed interface that allows users to switch between different views of the product details:
+
+<mat-tab-group>
+  <mat-tab label="Description">
+    <app-product-description [productId]="productId"></app-product-description>
+  </mat-tab>
+  <mat-tab label="Reviews">
+    <app-product-reviews [productId]="productId"></app-product-reviews>
+  </mat-tab>
+</mat-tab-group>
+
+9 - In the ProductListComponent, add a search bar that allows users to filter the list of products based on various criteria, including the product name and price.
+Use query parameters to pass the search criteria to the ProductListComponent:
+
+<input type="text" [(ngModel)]="searchName" />
+<input type="number" [(ngModel)]="searchPrice" />
+<button [routerLink]="['/products']" [queryParams]="{ name: searchName, price: searchPrice }">Search</button>
+
+10 - In the ProductListComponent, retrieve the search criteria from the query parameters and use them to filter the list of products:
+
+ngOnInit() {
+  this.route.queryParams.subscribe(params => {
+    this.searchName = params['name'] || '';
+    this.searchPrice = params['price'] || '';
+    this.filterProducts();
+  });
+}
+
+filterProducts() {
+  this.filteredProducts = this.products.filter(product =>
+    product.name.toLowerCase().indexOf(this.searchName.toLowerCase()) !== -1 &&
+    (!this.searchPrice || product.price <= this.searchPrice)
+  );
+}

@@ -1,0 +1,101 @@
+Routing
+
+Exercise 3
+
+Create an Angular application that logs routing events to the console, including when a route is activated, deactivated, and resolved.
+
+The application should also have a custom guard that prevents users from accessing certain routes.
+
+--
+
+1 - Create a new Angular application using the Angular CLI:
+    ng new my-app
+
+2 - Generate a HomeComponent:
+    ng generate component home
+
+3 - Generate a ProfileComponent:
+    ng generate component profile
+
+4 - Open app.module.ts and import the RouterModule and Routes modules from @angular/router.
+
+5 - Define the routes for the HomeComponent and ProfileComponent:
+
+const routes: Routes = [
+  { path: '', component: HomeComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
+];
+
+6 - Create a custom AuthGuard that prevents users from accessing the ProfileComponent if they are not logged in:
+
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthGuard implements CanActivate {
+  canActivate(
+    next: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
+      const isLoggedIn = /* Check if user is logged in */;
+      if (isLoggedIn) {
+        return true;
+      } else {
+        return false;
+      }
+  }
+}
+
+7 - Add the AuthGuard to the providers array of the @NgModule decorator:
+
+providers: [
+  AuthGuard,
+],
+
+8 - In the app.component.ts file, import the Router and NavigationStart events from @angular/router:
+
+import { Router, NavigationStart } from '@angular/router';
+
+9 - In the app.component.ts file, subscribe to the Router events and log them to the console:
+
+constructor(private router: Router) {
+  router.events.subscribe(event => {
+    if (event instanceof NavigationStart) {
+      console.log('Navigation started');
+    }
+    if (event instanceof ActivationStart) {
+      console.log('Route activation started');
+    }
+    if (event instanceof ActivationEnd) {
+      console.log('Route activation ended');
+    }
+    if (event instanceof ResolveStart) {
+      console.log('Route resolve started');
+    }
+    if (event instanceof ResolveEnd) {
+      console.log('Route resolve ended');
+    }
+    if (event instanceof NavigationEnd) {
+      console.log('Navigation ended');
+    }
+    if (event instanceof NavigationCancel) {
+      console.log('Navigation cancelled');
+    }
+    if (event instanceof NavigationError) {
+      console.log('Navigation error');
+    }
+  });
+}
+
+10 - Add a link to the ProfileComponent in the HomeComponent template:
+
+<a routerLink="/profile">Profile</a>
+
+
+11 -  To test the routing and routing events in the application, you can follow these steps:
+
+Run the application using the command: ng serve --open. This will start the development server and open the application in your default browser.
+Navigate to the Home page by clicking the Home link in the navigation bar.
+Open the browser console to view the routing events that are logged to the console.
+Click the Profile link in the Home page. If you are not logged in, you should be redirected to the login page. Otherwise, you should be navigated to the Profile page and the route activation events should be logged to the console.
+Try to access the Profile page by entering the URL in the address bar. If you are not logged in, you should be redirected to the login page. If you are logged in, you should be able to access the Profile page and the route activation events should be logged to the console.
+Log in to the application and try to access the Profile page again. You should be able to access the Profile page and the route activation events should be logged to the console.
+Try to access the Profile page again after logging out. You should be redirected to the login page and the route activation events should be logged to the console.

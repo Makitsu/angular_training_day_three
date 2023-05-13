@@ -1,0 +1,21 @@
+Project
+
+Idea 1
+
+--
+
+Create a simple weather application that displays the current weather information for a given location.
+
+The application should have two routes: a Home route and a Weather route.
+
+The Home route should display a form where the user can enter a location (e.g. city, state, or ZIP code) and submit the form to navigate to the Weather route.
+
+The Weather route should display the current weather information for the location that was entered on the Home route.
+
+You can use a weather API like OpenWeatherMap or Weatherstack to get the weather information.
+
+Create a guard that prevents the user from navigating to the Weather route if they haven't entered a location on the Home route.
+
+Add a navigation button to the Weather page that allows the user to go back to the Home page and enter a new location.
+
+Style the application using CSS to make it visually appealing.
